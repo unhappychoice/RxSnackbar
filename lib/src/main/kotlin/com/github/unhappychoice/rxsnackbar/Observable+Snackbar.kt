@@ -1,4 +1,4 @@
-package io.one_team.extension
+package com.github.unhappychoice.rxsnackbar
 
 import android.support.design.widget.Snackbar
 import android.view.View
