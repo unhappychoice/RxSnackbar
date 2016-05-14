@@ -14,7 +14,7 @@ allprojects {
     }
 }
 dependencies {
-    compile 'com.github.unhappychoice:RxSnackbar:$version'
+    compile 'com.github.unhappychoice:rxsnackbar:$version'
 }
 ```
 
@@ -30,7 +30,7 @@ dependencies {
 
 <dependency>
     <groupId>com.github.unhappychoice</groupId>
-    <artifactId>RxSnackbar</artifactId>
+    <artifactId>rxsnackbar</artifactId>
     <version>$version</version>
 </dependency>
 ```
