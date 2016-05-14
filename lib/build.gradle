@@ -16,7 +16,7 @@ apply plugin: 'android-maven'
 apply plugin: 'kotlin-android'
 
 project.version = scmVersion.version
-group='com.github.YourUsername'
+group='com.github.unhappychoice'
 
 scmVersion {
     tag {
