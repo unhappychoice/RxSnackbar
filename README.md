@@ -1,5 +1,5 @@
 # RxSnackbar
-[![](https://jitpack.io/v/unhappychoice/RxSnackbar.svg)](https://jitpack.io/#unhappychoice/RxSnackbar)
+[![](https://jitpack.io/v/unhappychoice/rxsnackbar.svg)](https://jitpack.io/#unhappychoice/rxsnackbar)
 
 This is RxJava / RxKotlin adapter for Android Snackbar
 
@@ -37,7 +37,15 @@ dependencies {
 
 ## Usage
 
-TBD
+```kotlin
+Observable.just(true)
+    .withNextSnackBar(this, "Data is coming!") // will show "Number is comming!"
+    .subscribe()
 
-## LISENCE 
-see [LISENCE](./LISENCE)
+Observable.just("Some data")
+    .withNextSnackBar(this) // will show Some data
+    .subscribe()
+```
+
+## LICENSE 
+see [LICENSE](./LICENSE)
