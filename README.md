@@ -3,6 +3,18 @@
 
 This is RxJava / RxKotlin adapter for Android Snackbar
 
+## Usage
+
+```kotlin
+Observable.just(true)
+    .withNextSnackBar(this, "Data is coming!") // will show "Number is comming!"
+    .subscribe()
+
+Observable.just("Some data")
+    .withNextSnackBar(this) // will show "Some data"
+    .subscribe()
+```
+
 ## Installation
 
 ### Gradle
@@ -35,17 +47,5 @@ dependencies {
 </dependency>
 ```
 
-## Usage
-
-```kotlin
-Observable.just(true)
-    .withNextSnackBar(this, "Data is coming!") // will show "Number is comming!"
-    .subscribe()
-
-Observable.just("Some data")
-    .withNextSnackBar(this) // will show Some data
-    .subscribe()
-```
-
-## LICENSE 
+## LICENSE
 see [LICENSE](./LICENSE)
