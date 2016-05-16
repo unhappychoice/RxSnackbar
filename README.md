@@ -5,13 +5,16 @@ This is RxJava / RxKotlin adapter for Android Snackbar
 
 ## Usage
 
-```kotlin
+### Kotlin
+
+```kotlin:
 Observable.just(true)
-    .withNextSnackBar(this, "Data is coming!") // will show "Number is comming!"
+    .withNextSnackBar(view, "Data is coming!") // will show "Number is comming!"
     .subscribe()
 
+// will show "Some data" and Undo action
 Observable.just("Some data")
-    .withNextSnackBar(this) // will show "Some data"
+    .withNextSnackBar(view, actionName = "Undo") { view -> someUndoAction() } 
     .subscribe()
 ```
 
