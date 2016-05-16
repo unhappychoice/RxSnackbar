@@ -9,49 +9,52 @@ import rx.lang.kotlin.subscribeWith
 fun <T> Observable<T>.withNextSnackBar(
         view: View?,
         message: String? = null,
-        length: Int = Snackbar.LENGTH_SHORT
+        length: Int = Snackbar.LENGTH_SHORT,
+        actionName: String? = null,
+        action: ((View?) -> Unit)? = null
 ): Observable<T> {
     return this.doOnNext { data ->
-        view?.let {
-            Snackbar.make(it, message ?: data.toString(), length).show()
-        }
+        val m = message ?: data.toString()
+        makeSnackbar(view, m, length, actionName, action)?.show()
     }
 }
 
 fun <T> Observable<T>.withErrorSnackBar(
         view: View?,
         message: String? = null,
-        length: Int = Snackbar.LENGTH_SHORT
+        length: Int = Snackbar.LENGTH_SHORT,
+        actionName: String? = null,
+        action: ((View?) -> Unit)? = null
 ): Observable<T> {
     return this.doOnError { e ->
-        view?.let {
-            Snackbar.make(it, message ?: e.message!!, length).show()
-        }
+        val m = message ?: e.message!!
+        makeSnackbar(view, m, length, actionName, action)?.show()
     }
 }
 
 fun <T> Observable<T>.withCompletedSnackBar(
         view: View?,
         message: String,
-        length: Int = Snackbar.LENGTH_SHORT
+        length: Int = Snackbar.LENGTH_SHORT,
+        actionName: String? = null,
+        action: ((View?) -> Unit)? = null
 ): Observable<T> {
     return this.doOnCompleted {
-        view?.let {
-            Snackbar.make(it, message, length).show()
-        }
+        makeSnackbar(view, message, length, actionName, action)?.show()
     }
 }
 
 fun <T> Observable<T>.subscribeNextWithSnackBar(
         view: View?,
         message: String? = null,
-        length: Int = Snackbar.LENGTH_SHORT
+        length: Int = Snackbar.LENGTH_SHORT,
+        actionName: String? = null,
+        action: ((View?) -> Unit)? = null
 ): Subscription {
     return this.subscribeWith {
         onNext { data ->
-            view?.let {
-                Snackbar.make(it, message ?: data.toString(), length).show()
-            }
+            val m = message ?: data.toString()
+            makeSnackbar(view, m, length, actionName, action)?.show()
         }
     }
 }
@@ -59,13 +62,14 @@ fun <T> Observable<T>.subscribeNextWithSnackBar(
 fun <T> Observable<T>.subscribeErrorWithSnackBar(
         view: View?,
         message: String? = null,
-        length: Int = Snackbar.LENGTH_SHORT
+        length: Int = Snackbar.LENGTH_SHORT,
+        actionName: String? = null,
+        action: ((View?) -> Unit)? = null
 ): Subscription {
     return this.subscribeWith {
         onError { e ->
-            view?.let {
-                Snackbar.make(it, message ?: e.message!!, length).show()
-            }
+            val m = message ?: e.message!!
+            makeSnackbar(view, m, length, actionName, action)?.show()
         }
     }
 }
@@ -73,13 +77,27 @@ fun <T> Observable<T>.subscribeErrorWithSnackBar(
 fun <T> Observable<T>.subscribeCompletedWithSnackBar(
         view: View?,
         message: String,
-        length: Int = Snackbar.LENGTH_SHORT
+        length: Int = Snackbar.LENGTH_SHORT,
+        actionName: String? = null,
+        action: ((View?) -> Unit)? = null
 ): Subscription {
     return this.subscribeWith {
         onCompleted {
-            view?.let {
-                Snackbar.make(it, message, length).show()
-            }
+            makeSnackbar(view, message, length, actionName, action)?.show()
         }
+    }
+}
+
+private fun makeSnackbar(
+        view: View?,
+        message: String,
+        length: Int = Snackbar.LENGTH_SHORT,
+        actionName: String? = null,
+        action: ((View?) -> Unit)? = null
+): Snackbar? {
+    return view?.let {
+        val bar = Snackbar.make(it, message, length)
+        if (actionName != null && action != null) bar.setAction(actionName, action)
+        bar
     }
 }
