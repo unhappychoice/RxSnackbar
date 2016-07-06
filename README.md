@@ -7,7 +7,7 @@ This is RxJava / RxKotlin adapter for Android Snackbar
 
 ### Kotlin
 
-```kotlin:
+```kotlin
 Observable.just(true)
     .withNextSnackBar(view, "Data is coming!") // will show "Number is comming!"
     .subscribe()
