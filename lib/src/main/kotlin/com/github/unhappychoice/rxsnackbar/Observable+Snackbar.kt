@@ -2,9 +2,9 @@ package com.github.unhappychoice.rxsnackbar
 
 import android.support.design.widget.Snackbar
 import android.view.View
-import rx.Observable
-import rx.Subscription
-import rx.lang.kotlin.subscribeWith
+import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.subscribeBy
 
 fun <T> Observable<T>.withNextSnackBar(
         view: View?,
@@ -12,12 +12,8 @@ fun <T> Observable<T>.withNextSnackBar(
         length: Int = Snackbar.LENGTH_SHORT,
         actionName: String? = null,
         action: ((View?) -> Unit)? = null
-): Observable<T> {
-    return this.doOnNext { data ->
-        val m = message ?: data.toString()
-        makeSnackbar(view, m, length, actionName, action)?.show()
-    }
-}
+): Observable<T> =
+    doOnNext { data -> makeSnackbar(view, message ?: data.toString(), length, actionName, action)?.show() }
 
 fun <T> Observable<T>.withErrorSnackBar(
         view: View?,
@@ -25,12 +21,8 @@ fun <T> Observable<T>.withErrorSnackBar(
         length: Int = Snackbar.LENGTH_SHORT,
         actionName: String? = null,
         action: ((View?) -> Unit)? = null
-): Observable<T> {
-    return this.doOnError { e ->
-        val m = message ?: e.message!!
-        makeSnackbar(view, m, length, actionName, action)?.show()
-    }
-}
+): Observable<T> =
+    doOnError { e -> makeSnackbar(view, message ?: e.message!!, length, actionName, action)?.show() }
 
 fun <T> Observable<T>.withCompletedSnackBar(
         view: View?,
@@ -38,55 +30,43 @@ fun <T> Observable<T>.withCompletedSnackBar(
         length: Int = Snackbar.LENGTH_SHORT,
         actionName: String? = null,
         action: ((View?) -> Unit)? = null
-): Observable<T> {
-    return this.doOnCompleted {
-        makeSnackbar(view, message, length, actionName, action)?.show()
-    }
-}
+): Observable<T> =
+    doOnComplete { makeSnackbar(view, message, length, actionName, action)?.show() }
 
-fun <T> Observable<T>.subscribeNextWithSnackBar(
+fun <T: Any> Observable<T>.subscribeNextWithSnackBar(
         view: View?,
         message: String? = null,
         length: Int = Snackbar.LENGTH_SHORT,
         actionName: String? = null,
         action: ((View?) -> Unit)? = null
-): Subscription {
-    return this.subscribeWith {
-        onNext { data ->
-            val m = message ?: data.toString()
-            makeSnackbar(view, m, length, actionName, action)?.show()
-        }
-    }
-}
+): Disposable =
+    subscribeBy(
+        onError = {},
+        onNext = { data -> makeSnackbar(view, message ?: data.toString(), length, actionName, action)?.show() }
+    )
 
-fun <T> Observable<T>.subscribeErrorWithSnackBar(
+fun <T: Any> Observable<T>.subscribeErrorWithSnackBar(
         view: View?,
         message: String? = null,
         length: Int = Snackbar.LENGTH_SHORT,
         actionName: String? = null,
         action: ((View?) -> Unit)? = null
-): Subscription {
-    return this.subscribeWith {
-        onError { e ->
-            val m = message ?: e.message!!
-            makeSnackbar(view, m, length, actionName, action)?.show()
-        }
-    }
-}
+): Disposable =
+    subscribeBy(
+        onError = { e -> makeSnackbar(view, message ?: e.message!!, length, actionName, action)?.show() }
+    )
 
-fun <T> Observable<T>.subscribeCompletedWithSnackBar(
+fun <T: Any> Observable<T>.subscribeCompletedWithSnackBar(
         view: View?,
         message: String,
         length: Int = Snackbar.LENGTH_SHORT,
         actionName: String? = null,
         action: ((View?) -> Unit)? = null
-): Subscription {
-    return this.subscribeWith {
-        onCompleted {
-            makeSnackbar(view, message, length, actionName, action)?.show()
-        }
-    }
-}
+): Disposable =
+    subscribeBy(
+        onError = {},
+        onComplete = { makeSnackbar(view, message, length, actionName, action)?.show() }
+    )
 
 private fun makeSnackbar(
         view: View?,
@@ -94,10 +74,8 @@ private fun makeSnackbar(
         length: Int = Snackbar.LENGTH_SHORT,
         actionName: String? = null,
         action: ((View?) -> Unit)? = null
-): Snackbar? {
-    return view?.let {
-        val bar = Snackbar.make(it, message, length)
-        if (actionName != null && action != null) bar.setAction(actionName, action)
-        bar
-    }
+): Snackbar? = view?.let {
+    val bar = Snackbar.make(it, message, length)
+    if (actionName != null && action != null) bar.setAction(actionName, action)
+    bar
 }
