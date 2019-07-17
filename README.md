@@ -1,6 +1,5 @@
 # RxSnackbar
 [![](https://jitpack.io/v/unhappychoice/rxsnackbar.svg)](https://jitpack.io/#unhappychoice/rxsnackbar)
-![CircleCI](https://img.shields.io/circleci/build/github/unhappychoice/RxSnackbar.svg)
 [![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/unhappychoice/RxSnackbar.svg)](https://libraries.io/github/unhappychoice/RxSnackbar)
 ![GitHub](https://img.shields.io/github/license/unhappychoice/RxSnackbar.svg)
 
