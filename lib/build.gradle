@@ -51,5 +51,5 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
 }
