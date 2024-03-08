@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlin_version = "1.9.22"
+        kotlin_version = "1.9.23"
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
