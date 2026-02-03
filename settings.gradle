@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = 'rxsnackbar'
 include ':lib'
+project(':lib').name = 'rxsnackbar'
