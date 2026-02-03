@@ -1,4 +1,4 @@
-name: Build
+name: Test
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [master]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,12 +22,12 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build
-        run: ./gradlew assemble
+      - name: Run tests
+        run: ./gradlew test
 
-      - name: Upload build reports
-        if: failure()
+      - name: Upload test results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: build-reports
-          path: lib/build/reports/
+          name: test-results
+          path: lib/build/test-results/
