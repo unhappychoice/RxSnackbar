@@ -1,55 +1,62 @@
-buildscript {
-    ext {
-        kotlin_version = "2.2.0"
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
 plugins {
-    id 'pl.allegro.tech.build.axion-release' version '1.19.1'
-}
-
-apply plugin: 'com.android.library'
-apply plugin: 'android-maven'
-apply plugin: 'kotlin-android'
-
-project.version = scmVersion.version
-group='com.github.unhappychoice'
-
-scmVersion {
-    tag {
-        prefix = ''
-    }
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion '29.0.1'
+    namespace 'com.github.unhappychoice.rxsnackbar'
+    compileSdk 35
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 29
+        minSdk 21
+        targetSdk 35
         versionCode 1
-        versionName "1.0"
+        versionName "2.0.0"
     }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
     }
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "androidx.appcompat:appcompat:1.7.1"
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation 'junit:junit:4.13.2'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.unhappychoice'
+                artifactId = 'rxsnackbar'
+                version = '2.0.0'
+            }
+        }
+    }
 }

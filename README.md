@@ -1,9 +1,14 @@
 # RxSnackbar
 [![](https://jitpack.io/v/unhappychoice/rxsnackbar.svg)](https://jitpack.io/#unhappychoice/rxsnackbar)
-[![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/unhappychoice/RxSnackbar.svg)](https://libraries.io/github/unhappychoice/RxSnackbar)
 ![GitHub](https://img.shields.io/github/license/unhappychoice/RxSnackbar.svg)
 
-This is RxJava / RxKotlin adapter for Android Snackbar
+RxJava 2 / RxKotlin adapter for Android Snackbar (AndroidX)
+
+## Requirements
+
+- RxJava 2
+- AndroidX (Material Components)
+- minSdk 21
 
 ## Usage
 
@@ -11,12 +16,17 @@ This is RxJava / RxKotlin adapter for Android Snackbar
 
 ```kotlin
 Observable.just(true)
-    .withNextSnackBar(view, "Data is coming!") // will show "Number is comming!"
+    .withNextSnackBar(view, "Data is coming!")
     .subscribe()
 
-// will show "Some data" and Undo action
+// with action
 Observable.just("Some data")
     .withNextSnackBar(view, actionName = "Undo") { view -> someUndoAction() } 
+    .subscribe()
+
+// error handling
+Observable.just("data")
+    .withErrorSnackBar(view, "Something went wrong")
     .subscribe()
 ```
 
@@ -25,31 +35,13 @@ Observable.just("Some data")
 ### Gradle
 
 ```groovy
-allprojects {
-    repositories {
-        maven { url "https://jitpack.io" }
-    }
+repositories {
+    maven { url "https://jitpack.io" }
 }
+
 dependencies {
-    compile 'com.github.unhappychoice:rxsnackbar:$version'
+    implementation 'com.github.unhappychoice:rxsnackbar:2.0.0'
 }
-```
-
-### Maven
-
-```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-
-<dependency>
-    <groupId>com.github.unhappychoice</groupId>
-    <artifactId>rxsnackbar</artifactId>
-    <version>$version</version>
-</dependency>
 ```
 
 ## LICENSE

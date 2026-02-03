@@ -1,6 +1,6 @@
 package com.github.unhappychoice.rxsnackbar
 
-import android.support.design.widget.Snackbar
+import com.google.android.material.snackbar.Snackbar
 import android.view.View
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
