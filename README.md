@@ -46,3 +46,7 @@ dependencies {
 
 ## LICENSE
 see [LICENSE](./LICENSE)
+
+## Author
+
+[@unhappychoice](https://unhappychoice.com)
